@@ -1,24 +1,206 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>live-resume-creator-pro</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
-
-    <meta property="og:title" content="live-resume-creator-pro" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <title>Interactive Resume Builder</title>
+    <meta name="description" content="Create a professional resume with real-time preview" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
   </head>
 
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div class="container">
+      <header class="header">
+        <h1><i class="fas fa-file-alt"></i> Interactive Resume Builder</h1>
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar"></div>
+          <span class="progress-text" id="progressText">0% Complete</span>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <!-- Form Section -->
+        <section class="form-section">
+          <div class="form-container">
+            <h2>Build Your Resume</h2>
+            
+            <!-- Personal Information -->
+            <div class="form-group">
+              <h3><i class="fas fa-user"></i> Personal Information</h3>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="fullName">Full Name *</label>
+                  <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="input-group">
+                  <label for="email">Email Address *</label>
+                  <input type="email" id="email" name="email" required>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="input-group">
+                  <label for="location">Location</label>
+                  <input type="text" id="location" name="location" placeholder="City, State">
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="linkedin">LinkedIn Profile</label>
+                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+              </div>
+            </div>
+
+            <!-- Professional Summary -->
+            <div class="form-group">
+              <h3><i class="fas fa-quote-left"></i> Professional Summary</h3>
+              <div class="input-group">
+                <label for="summary">Summary</label>
+                <textarea id="summary" name="summary" rows="4" placeholder="Write a brief professional summary highlighting your key strengths and career objectives..."></textarea>
+              </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="form-group">
+              <h3><i class="fas fa-cogs"></i> Skills</h3>
+              <div class="input-group">
+                <label for="skills">Skills (comma-separated)</label>
+                <textarea id="skills" name="skills" rows="3" placeholder="JavaScript, React, Node.js, Python, SQL, Project Management..."></textarea>
+              </div>
+            </div>
+
+            <!-- Education -->
+            <div class="form-group">
+              <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+              <div id="educationContainer">
+                <div class="education-entry">
+                  <div class="input-row">
+                    <div class="input-group">
+                      <label>Degree</label>
+                      <input type="text" name="degree" placeholder="Bachelor of Science">
+                    </div>
+                    <div class="input-group">
+                      <label>Field of Study</label>
+                      <input type="text" name="field" placeholder="Computer Science">
+                    </div>
+                  </div>
+                  <div class="input-row">
+                    <div class="input-group">
+                      <label>Institution</label>
+                      <input type="text" name="institution" placeholder="University Name">
+                    </div>
+                    <div class="input-group">
+                      <label>Graduation Year</label>
+                      <input type="number" name="gradYear" min="1950" max="2030" placeholder="2024">
+                    </div>
+                  </div>
+                  <button type="button" class="remove-btn" onclick="removeEducation(this)">
+                    <i class="fas fa-trash"></i> Remove
+                  </button>
+                </div>
+              </div>
+              <button type="button" class="add-btn" onclick="addEducation()">
+                <i class="fas fa-plus"></i> Add Education
+              </button>
+            </div>
+
+            <!-- Experience -->
+            <div class="form-group">
+              <h3><i class="fas fa-briefcase"></i> Work Experience</h3>
+              <div id="experienceContainer">
+                <div class="experience-entry">
+                  <div class="input-row">
+                    <div class="input-group">
+                      <label>Job Title</label>
+                      <input type="text" name="jobTitle" placeholder="Software Engineer">
+                    </div>
+                    <div class="input-group">
+                      <label>Company</label>
+                      <input type="text" name="company" placeholder="Tech Company Inc.">
+                    </div>
+                  </div>
+                  <div class="input-row">
+                    <div class="input-group">
+                      <label>Start Date</label>
+                      <input type="month" name="startDate">
+                    </div>
+                    <div class="input-group">
+                      <label>End Date</label>
+                      <input type="month" name="endDate">
+                      <label class="checkbox-label">
+                        <input type="checkbox" name="current"> Currently working here
+                      </label>
+                    </div>
+                  </div>
+                  <div class="input-group">
+                    <label>Job Description</label>
+                    <textarea name="jobDescription" rows="3" placeholder="• Developed and maintained web applications using React and Node.js&#10;• Collaborated with cross-functional teams to deliver high-quality software&#10;• Improved application performance by 30% through code optimization"></textarea>
+                  </div>
+                  <button type="button" class="remove-btn" onclick="removeExperience(this)">
+                    <i class="fas fa-trash"></i> Remove
+                  </button>
+                </div>
+              </div>
+              <button type="button" class="add-btn" onclick="addExperience()">
+                <i class="fas fa-plus"></i> Add Experience
+              </button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-actions">
+              <button type="button" class="clear-btn" onclick="clearForm()">
+                <i class="fas fa-eraser"></i> Clear Form
+              </button>
+              <button type="button" class="download-btn" onclick="downloadPDF()">
+                <i class="fas fa-download"></i> Download PDF
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Resume Preview Section -->
+        <section class="preview-section">
+          <div class="resume-container" id="resumePreview">
+            <div class="resume-header">
+              <h1 class="resume-name" id="previewName">Your Name</h1>
+              <div class="resume-contact" id="previewContact">
+                <span class="contact-item" id="previewEmail"></span>
+                <span class="contact-item" id="previewPhone"></span>
+                <span class="contact-item" id="previewLocation"></span>
+                <span class="contact-item" id="previewLinkedin"></span>
+              </div>
+            </div>
+
+            <div class="resume-section" id="previewSummarySection">
+              <h2>Professional Summary</h2>
+              <p id="previewSummary"></p>
+            </div>
+
+            <div class="resume-section" id="previewSkillsSection">
+              <h2>Skills</h2>
+              <div class="skills-list" id="previewSkills"></div>
+            </div>
+
+            <div class="resume-section" id="previewExperienceSection">
+              <h2>Work Experience</h2>
+              <div id="previewExperience"></div>
+            </div>
+
+            <div class="resume-section" id="previewEducationSection">
+              <h2>Education</h2>
+              <div id="previewEducation"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
